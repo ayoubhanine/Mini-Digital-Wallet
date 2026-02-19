@@ -18,9 +18,9 @@ const getRequestBody = (req) => {
 };
 
 module.exports = async (req, res) => {
-
+const urlParts = req.url.split("/").filter(Boolean); // ["users"] ou ["users", "1"]
   // CREATE USER
-  if (req.method === "POST" && req.url === "/users") {
+  if (req.method === "POST" && urlParts.length === 1 && urlParts[0] === "users") {
     const body = await getRequestBody(req);
 
     if (!body.name) {
@@ -40,14 +40,18 @@ module.exports = async (req, res) => {
   }
 
   // GET ALL USERS
-  if (req.method === "GET" && req.url === "/users") {
+  if (req.method === "GET" && urlParts.length === 1 && urlParts[0] === "users") {
     res.statusCode = 200;
     return res.end(JSON.stringify(users));
   }
 
   // GET USER BY ID
-  if (req.method === "GET" && req.url.startsWith("/users/")) {
-    const id = parseInt(req.url.split("/")[2]);
+  if (req.method === "GET" && urlParts.length === 2 && urlParts[0] === "users") {
+    const id =parseInt(urlParts[1]);
+    if (isNaN(id)) {
+  res.statusCode = 400;
+  return res.end(JSON.stringify({ message: "Invalid user ID" }));
+}
 
     const user = users.find(u => u.id === id);
 
@@ -60,8 +64,12 @@ module.exports = async (req, res) => {
   }
 
   // DELETE USER
-  if (req.method === "DELETE" && req.url.startsWith("/users/")) {
-    const id = parseInt(req.url.split("/")[2]);
+  if (req.method === "DELETE" &&urlParts.length === 2 && urlParts[0] === "users" ) {
+    const id = parseInt(urlParts[1]);
+    if (isNaN(id)) {
+  res.statusCode = 400;
+  return res.end(JSON.stringify({ message: "Invalid user ID" }));
+}
 
     const index = users.findIndex(u => u.id === id);
 

@@ -10,25 +10,29 @@ const getRequestBody = (req) => {
 
     req.on("end", () => {
       if (!body) return resolve({});
-      resolve(JSON.parse(body));
+      try {
+        resolve(JSON.parse(body));
+      } catch (error) {
+        reject("Invalid JSON");
+      }
     });
 
     req.on("error", reject);
   });
 };
 
-module.exports = async (req, res) => {
-
+module.exports = async (req, res) => {      //C’est la fonction qui gère toutes les routes /wallets.
+const urlParts = req.url.replace(/\/+$/, '').split("/").filter(Boolean); 
   // CREATE WALLET
-  if (req.method === "POST" && req.url === "/wallets") {
-    const body = await getRequestBody(req);
+  if (req.method === "POST" &&  urlParts.length === 1 && urlParts[0] === "wallets") {
+    const body = await getRequestBody(req);   //Lire le body
 
     if (!body.user_id || !body.name) {
       res.statusCode = 400;
       return res.end(JSON.stringify({ message: "user_id and name required" }));
     }
 
-    const userExists = users.find(u => u.id === body.user_id);
+    const userExists = users.find(u => u.id === body.user_id); //Vérifier si user existe
 
     if (!userExists) {
       res.statusCode = 404;
@@ -49,14 +53,19 @@ module.exports = async (req, res) => {
   }
 
   // GET ALL WALLETS
-  if (req.method === "GET" && req.url === "/wallets") {
+  if (req.method === "GET" && urlParts.length === 1 && urlParts[0] === "wallets") {
+    res.statusCode = 200;
     return res.end(JSON.stringify(wallets));
   }
 
   // DEPOSIT
-  if (req.method === "POST" && req.url.includes("/deposit")) {
-    const id = parseInt(req.url.split("/")[2]);
-    const body = await getRequestBody(req);
+  if (req.method === "POST" && urlParts.length === 3 && urlParts[0] === "wallets" && urlParts[2] === "deposit") {
+    const id = parseInt(urlParts[1]);
+     if (isNaN(id)) {
+      res.statusCode = 400;
+      return res.end(JSON.stringify({ message: "Invalid wallet ID" }));
+    }
+   
 
     const wallet = wallets.find(w => w.id === id);
 
@@ -64,16 +73,24 @@ module.exports = async (req, res) => {
       res.statusCode = 404;
       return res.end(JSON.stringify({ message: "Wallet not found" }));
     }
-
+     const body = await getRequestBody(req);
+    if (!body.amount || body.amount <= 0) {
+      res.statusCode = 400;
+      return res.end(JSON.stringify({ message: "Invalid amount" }));
+    }
     wallet.sold += body.amount;
 
     return res.end(JSON.stringify(wallet));
   }
 
-  // WITHDRAW
-  if (req.method === "POST" && req.url.includes("/withdraw")) {
-    const id = parseInt(req.url.split("/")[2]);
-    const body = await getRequestBody(req);
+  // Retirer
+  if (req.method === "POST" && urlParts.length === 3 && urlParts[0] === "wallets" && urlParts[2] === "withdraw") {
+    const id = parseInt(urlParts[1]);
+    if (isNaN(id)) {
+      res.statusCode = 400;
+      return res.end(JSON.stringify({ message: "Invalid wallet ID" }));
+    }
+    
 
     const wallet = wallets.find(w => w.id === id);
 
@@ -81,7 +98,11 @@ module.exports = async (req, res) => {
       res.statusCode = 404;
       return res.end(JSON.stringify({ message: "Wallet not found" }));
     }
-
+    const body = await getRequestBody(req);
+     if (!body.amount || body.amount <= 0) {
+      res.statusCode = 400;
+      return res.end(JSON.stringify({ message: "Invalid amount" }));
+    }
     if (wallet.sold < body.amount) {
       res.statusCode = 400;
       return res.end(JSON.stringify({ message: "Insufficient balance" }));
