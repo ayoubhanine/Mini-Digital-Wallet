@@ -1,0 +1,37 @@
+[
+  {
+    "wallet_id": 1,
+    "user_id": 2,
+    "type": "deposit",
+    "amount": 12,
+    "date": "2026-02-20T14:09:45.044Z"
+  },
+  {
+    "wallet_id": 1,
+    "user_id": 2,
+    "type": "deposit",
+    "amount": 17,
+    "date": "2026-02-20T14:10:13.964Z"
+  },
+  {
+    "wallet_id": 1,
+    "user_id": 2,
+    "type": "withdraw",
+    "amount": 10,
+    "date": "2026-02-20T14:15:26.891Z"
+  },
+  {
+    "wallet_id": 2,
+    "user_id": 2,
+    "type": "deposit",
+    "amount": 1234,
+    "date": "2026-02-20T14:18:15.587Z"
+  },
+  {
+    "wallet_id": 2,
+    "user_id": 2,
+    "type": "withdraw",
+    "amount": 123,
+    "date": "2026-02-20T14:18:51.490Z"
+  }
+]

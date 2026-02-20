@@ -1,5 +1,5 @@
 const { wallets, users } = require("../data/data")
-
+const { saveOperation} =require("../history")
 // CREATE WALLET
 function createWallet(req, res, body) {
   const { user_id, name } = body
@@ -67,6 +67,14 @@ function deposit(req, res, body) {
   }
 
   wallet.sold += amount
+   //  Enregistrer l'opération dans history.json
+  saveOperation({
+    wallet_id: wallet.id,
+    user_id: wallet.user_id,
+    type: "deposit",
+    amount,
+    date: new Date().toISOString()
+  })
   res.writeHead(200)
   res.end(JSON.stringify(wallet))
 }
@@ -90,6 +98,13 @@ function withdraw(req, res, body) {
   }
 
   wallet.sold -= amount
+   saveOperation({
+    wallet_id: wallet.id,
+    user_id: wallet.user_id,
+    type: "withdraw",
+    amount,
+    date: new Date().toISOString()
+  })
   res.writeHead(200)
   res.end(JSON.stringify(wallet))
 }
