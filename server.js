@@ -1,50 +1,31 @@
-// const http = require("http");
-// const userRoutes = require("./routes/users");
-// const walletRoutes = require("./routes/wallets");
+const http = require("http")
+const userRoutes = require("./routes/userRoutes")
+const walletRoutes = require("./routes/walletRoutes")
 
-// const server = http.createServer(async (req, res) => {
-//   res.setHeader("Content-Type", "application/json");
+const server = http.createServer((req, res) => {
 
-//   if (req.url.startsWith("/users")) {
-//     userRoutes(req, res);
-//   } 
-//   else if (req.url.startsWith("/wallets")) {
-//     walletRoutes(req, res);
-//   } 
-//   else {
-//     res.statusCode = 404;
-//     res.end(JSON.stringify({ message: "Route not found" }));
-//   }
-// });
+  let body = ""
 
-// server.listen(3001, () => {
-//   console.log("Server running on http://localhost:3001");
-// });
-const http = require("http");
-const userRoutes = require("./routes/users");
-const walletRoutes = require("./routes/wallets");
+  req.on("data", chunk => {
+    body += chunk.toString()
+  })
 
-const server = http.createServer(async (req, res) => {
-  res.setHeader("Content-Type", "application/json");
+  req.on("end", () => {
 
-  // On récupère uniquement le pathname (ignore query string)
-  const baseUrl = req.url.split("?")[0].replace(/\/+$/, ""); // enlève slash final
+    body = body ? JSON.parse(body) : {}
 
-  if (baseUrl.startsWith("/users")) {
-    req.url = baseUrl; // met à jour req.url pour users.js
-    userRoutes(req, res);
-  } 
-  else if (baseUrl.startsWith("/wallets")) {
-    req.url = baseUrl;
-    walletRoutes(req, res);
-  } 
-  else {
-    res.statusCode = 404;
-    res.end(JSON.stringify({ message: "Route not found" }));
-  }
-});
+    res.setHeader("Content-Type", "application/json")
 
-server.listen(3001, () => {
-  console.log("Server running on http://localhost:3001");
-});
+    userRoutes(req, res, body)
+    walletRoutes(req, res, body)
 
+    if (!res.writableEnded) {
+      res.writeHead(404)
+      res.end(JSON.stringify({ message: "Route not found" }))
+    }
+  })
+})
+
+server.listen(3003, () => {
+  console.log("Server running on port 3003")
+})
