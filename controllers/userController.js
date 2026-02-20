@@ -46,14 +46,14 @@ function updateUser(req, res, body) {
 function deleteUser(req, res) {
   const urlParts = req.url.split("/")
   const id = parseInt(urlParts[2])
-  const index = users.findIndex(u => u.id === id)
+  const index = users.findIndex(u => u.id === id)  // findIndex retourn -1 si il ne trouve aucun user
 
   if (index === -1) {
     res.writeHead(404)
     return res.end(JSON.stringify({ message: "User not found" }))
   }
 
-  users.splice(index, 1)
+  users.splice(index, 1) //index → position à supprimer    1:nbre delement a supprimmer
   res.writeHead(200)
   res.end(JSON.stringify({ message: "User deleted" }))
 }
