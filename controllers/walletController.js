@@ -8,8 +8,10 @@ function createWallet(req, res, body) {
     res.writeHead(404)
     return res.end(JSON.stringify({ message: "User not found" }))
   }
+  const maxId=wallets.length>0
+  ?Math.max(...wallets.map(wallet=>wallet.id)):0;
 
-  const wallet = { id: wallets.length + 1, user_id, name, sold: 0 }
+  const wallet = { id: maxId + 1, user_id, name, sold: 0 }
   wallets.push(wallet)
   res.writeHead(201)
   res.end(JSON.stringify(wallet))

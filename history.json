@@ -109,5 +109,102 @@
     "type": "deposit",
     "amount": 1234,
     "date": "2026-02-20T14:48:12.814Z"
+  },
+  {
+    "wallet_id": 1,
+    "user_id": 1,
+    "type": "deposit",
+    "date": "2026-02-23T09:44:28.162Z"
+  },
+  {
+    "wallet_id": 1,
+    "user_id": 1,
+    "type": "deposit",
+    "amount": 123,
+    "date": "2026-02-23T09:44:39.574Z"
+  },
+  {
+    "wallet_id": 1,
+    "user_id": 1,
+    "type": "deposit",
+    "amount": 123,
+    "date": "2026-02-23T09:44:45.326Z"
+  },
+  {
+    "wallet_id": 1,
+    "user_id": 1,
+    "type": "deposit",
+    "amount": 1234,
+    "date": "2026-02-23T09:46:57.907Z"
+  },
+  {
+    "wallet_id": 1,
+    "user_id": 1,
+    "type": "deposit",
+    "amount": 1234,
+    "date": "2026-02-23T09:47:03.316Z"
+  },
+  {
+    "wallet_id": 2,
+    "user_id": 1,
+    "type": "deposit",
+    "amount": 1234,
+    "date": "2026-02-23T09:47:10.540Z"
+  },
+  {
+    "wallet_id": 2,
+    "user_id": 1,
+    "type": "deposit",
+    "amount": 12,
+    "date": "2026-02-23T09:47:17.244Z"
+  },
+  {
+    "wallet_id": 2,
+    "user_id": 1,
+    "type": "withdraw",
+    "amount": 122,
+    "date": "2026-02-23T09:47:31.244Z"
+  },
+  {
+    "wallet_id": 2,
+    "user_id": 1,
+    "type": "withdraw",
+    "amount": 122,
+    "date": "2026-02-23T09:47:33.916Z"
+  },
+  {
+    "wallet_id": 2,
+    "user_id": 1,
+    "type": "withdraw",
+    "amount": 122,
+    "date": "2026-02-23T09:47:34.427Z"
+  },
+  {
+    "wallet_id": 2,
+    "user_id": 1,
+    "type": "withdraw",
+    "amount": 122,
+    "date": "2026-02-23T09:47:36.236Z"
+  },
+  {
+    "wallet_id": 2,
+    "user_id": 2,
+    "type": "deposit",
+    "amount": 112,
+    "date": "2026-02-23T10:32:28.762Z"
+  },
+  {
+    "wallet_id": 2,
+    "user_id": 2,
+    "type": "deposit",
+    "amount": 11,
+    "date": "2026-02-23T10:32:32.476Z"
+  },
+  {
+    "wallet_id": 2,
+    "user_id": 2,
+    "type": "withdraw",
+    "amount": 123,
+    "date": "2026-02-23T10:32:54.852Z"
   }
 ]

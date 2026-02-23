@@ -3,16 +3,22 @@ const { users } = require("../data/data")
 // CREATE
 function createUser(req, res, body) {
   const { name } = body
+  
 
   if (!name) {
     res.writeHead(400)
     return res.end(JSON.stringify({ message: "Name required" }))
   }
+  //  Trouver le plus grand ID existant
+const maxId = users.length > 0 
+  ? Math.max(...users.map(user => user.id)) 
+  : 0;
 
-  const user = {
-    id: users.length + 1,
-    name
-  }
+const user = {
+  id: maxId + 1,
+  name
+};
+  
 
   users.push(user)
 
